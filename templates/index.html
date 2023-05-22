@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h2>Kanban Board</h2>
+
+    <!-- Add task form -->
+    <form method="POST">
+        <input type="text" name="task" required>
+        <input type="hidden" name="action" value="add">
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Move task form -->
+    <form method="POST">
+        <select name="from" required>
+            <option disabled selected>Move task from</option>
+            {% for list_name in tasks.keys() %}
+            <option>{{ list_name }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="task" required>
+            <option disabled selected>Select task</option>
+            {% for task_list in tasks.values() %}
+            {% for task in task_list %}
+            <option>{{ task }}</option>
+            {% endfor %}
+            {% endfor %}
+        </select>
+
+        <select name="to" required>
+            <option disabled selected>Move task to</option>
+            {% for list_name in tasks.keys() %}
+            <option>{{ list_name }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="hidden" name="action" value="move">
+        <button type="submit">Move Task</button>
+    </form>
+
+    <!-- Kanban boards -->
+    <div class="container">
+        {% for list_name, task_list in tasks.items() %}
+        <div class="board">
+            <h3>{{ list_name }}</h3>
+            <ul>
+                {% for task in task_list %}
+                <li>
+                    {{ task }}
+                    <form method="POST" style="display: inline;">
+                        <input type="hidden" name="task" value="{{ task }}">
+                        <input type="hidden" name="list" value="{{ list_name }}">
+                        <input type="hidden" name="action" value="delete">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
