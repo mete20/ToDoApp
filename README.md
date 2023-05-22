@@ -1,4 +1,4 @@
-#Kanban Board App#
+# Kanban Board App
 
 This is a simple Kanban board application built with Flask and JavaScript.
 
